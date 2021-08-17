@@ -40,9 +40,11 @@ Shoulda::Matchers.configure do |config|
 end
 
 RSpec.configure do |config|
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.include FactoryBot::Syntax::Methods
 
-  config.use_transactional_fixtures = true
+  FactoryBot.definition_file_paths = [
+    "#{Rails.root}/spec/factories"
+  ]
 
   config.infer_spec_type_from_file_location!
 

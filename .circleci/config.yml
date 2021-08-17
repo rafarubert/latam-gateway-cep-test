@@ -4,9 +4,16 @@ jobs:
     docker:
       - image: ruby:3.0.2-alpine
       - image: mongo:latest
+      - image: postgres:alpine
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
     steps:
-      - run: apk add alpine-sdk git ruby-full ruby-dev
+      - run: apk add alpine-sdk git ruby-full ruby-dev postgresql-dev libpq tzdata
       - checkout
       - run: gem install bundler
       - run: bundle install
-      - run: bundle exec rspec spec
+      - run: RAILS_ENV=test bundle exec rake db:create db:migrate
+      - run: bundle exec rubocop
+      - run: bundle exec rails_best_practices
+      - run: bundle exec rake spec

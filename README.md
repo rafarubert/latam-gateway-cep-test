@@ -33,7 +33,7 @@ export USER
     docker-compose run --rm app bundle exec rails c
 
 ### run tests
-    docker-compose run --rm app rspec
+    docker-compose run --rm app bundle exec spec
 
 ### run linux shell
     docker-compose run --rm app sh
