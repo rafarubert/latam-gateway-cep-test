@@ -17,6 +17,6 @@ class AuthenticationValidation
   end
 
   def validates_params(user)
-    call_error('Bad request', :bad_request) unless user.email || user.password
+    call_error('Unprocessable Entity', :unprocessable_entity) if user.email.blank? || user.password.blank?
   end
 end

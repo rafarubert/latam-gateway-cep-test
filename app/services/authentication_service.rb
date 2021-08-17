@@ -7,12 +7,17 @@ class AuthenticationService
     @create_token_service = CreateTokenService.new
   end
 
-  def call(user)
-    @authentication_validation.validate(user)
+  def call(user_vo)
+    invalid_credentials_error = AuthenticationError.new('Invalid Credentials', :unauthorized)
+    @authentication_validation.validate(user_vo)
 
-    user = @user_repository.find_by_email!(user.email)
+    user = begin
+      @user_repository.find_by_email!(user_vo.email)
+    rescue ActiveRecord::RecordNotFound
+      raise(invalid_credentials_error)
+    end
 
-    AuthenticationError.new('Invalid credentials', :unauthorized) unless user.authenticate(user.password)
+    raise(invalid_credentials_error) unless user.authenticate(user_vo.password)
 
     @create_token_service.call(user)
   end
