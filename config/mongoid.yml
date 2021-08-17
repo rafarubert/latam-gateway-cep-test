@@ -1,0 +1,17 @@
+development:
+  clients:
+    default:
+      database: cep_development
+      hosts:
+        - <%= ENV.fetch('MONGO_HOST', '127.0.0.1:27017') %>
+
+test:
+  clients:
+    default:
+      database: cep_test
+      hosts:
+        - <%= ENV.fetch('MONGO_HOST', '127.0.0.1:27017') %>
+      options:
+        read:
+          mode: :primary
+        max_pool_size: 1

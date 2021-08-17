@@ -12,22 +12,21 @@ RUN adduser \
     --home "$(pwd)" \
     --no-create-home \
     --uid "$UID" \
-    "$USER" && \
-    apk add alpine-sdk git ruby-full ruby-dev
+    "$USER" "$USER" && \
+    apk update && \
+    apk add alpine-sdk git ruby-full ruby-dev \ 
+    postgresql-dev libpq tzdata
 
 WORKDIR /app
 
-COPY --chown=${USER} Gemfile /app/Gemfile
-COPY --chown=${USER} *Gemfile.lock /app/
+RUN mkdir /tmp/gems
 
-RUN chown -R $USER /app && mkdir /gems && \
-    mkdir /mongo && chown -R $USER /gems /mongo
+ENV BUNDLE_PATH="/tmp/gems"
 
-ENV BUNDLE_PATH="/gems"
+COPY Gemfile /app/Gemfile
+RUN cp Gemfile.lock /app || echo 'Gemfile.lock does not exist'
 
-RUN gem install bundler && bundle install
+RUN gem install bundler && gem install pg && bundle install
+USER "$USER"
 
 COPY --chown=${USER} . /app
-RUN chown -R $USER /app
-
-USER "$USER"
