@@ -14,14 +14,14 @@ RUN adduser \
     --uid "$UID" \
     "$USER" "$USER" && \
     apk update && \
-    apk add alpine-sdk git ruby-full ruby-dev \ 
+    apk add alpine-sdk git ruby-full ruby-dev \
     postgresql-dev libpq tzdata
 
 WORKDIR /app
 
-RUN mkdir /tmp/gems
+RUN mkdir -p /app/tmp/gems
 
-ENV BUNDLE_PATH="/tmp/gems"
+ENV BUNDLE_PATH="/app/tmp/gems"
 
 COPY Gemfile /app/Gemfile
 RUN cp Gemfile.lock /app || echo 'Gemfile.lock does not exist'

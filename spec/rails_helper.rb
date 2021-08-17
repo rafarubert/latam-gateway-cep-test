@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
-require 'database_cleaner'
 require 'database_cleaner-mongoid'
+require 'database_cleaner/active_record'
 
 require 'shoulda/matchers'
 require 'factory_bot'
@@ -9,12 +11,12 @@ require 'factory_bot'
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../config/environment', __dir__)
 
-abort("The Rails environment is running in production mode!") if Rails.env.production?
+abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
 
 require 'simplecov'
 
-#Loads dotenv conf file
+# Loads dotenv conf file
 require 'dotenv'
 Dotenv.load('.env')
 
@@ -24,7 +26,6 @@ rescue ActiveRecord::PendingMigrationError => e
   puts e.to_s.strip
   exit 1
 end
-
 
 SimpleCov.start do
   add_filter '/spec/'
@@ -48,12 +49,12 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     FactoryBot.reload
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
-    DatabaseCleaner[:mongoid].strategy = [:deletion]
+    DatabaseCleaner[:active_record].strategy = :transaction
+    DatabaseCleaner[:active_record].clean_with(:truncation)
+    DatabaseCleaner[:mongoid].strategy = :deletion
   end
 
-  config.around(:each) do |example|
+  config.around do |example|
     DatabaseCleaner.cleaning do
       example.run
     end
@@ -62,5 +63,4 @@ RSpec.configure do |config|
   config.after do
     DatabaseCleaner[:mongoid].clean
   end
-
 end

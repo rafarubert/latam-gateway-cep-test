@@ -16,7 +16,7 @@ services:
     command: "./start.sh"
     volumes:
       - .:/app
-      - gems:/tmp/gems
+      - gems:/app/tmp/gems
     depends_on:
     - db
     - redis
