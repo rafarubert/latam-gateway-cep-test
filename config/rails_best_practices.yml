@@ -36,7 +36,7 @@ UseModelAssociationCheck: { }
 UseMultipartAlternativeAsContentTypeOfEmailCheck: { }
 #UseParenthesesInMethodDefCheck: { }
 UseObserverCheck: { }
-UseQueryAttributeCheck: { ignored_files: ['app/app/validations/' ] }
+UseQueryAttributeCheck: { ignored_files: ['app/validations/' ] }
 UseSayWithTimeInMigrationsCheck: { }
 UseScopeAccessCheck: { }
 UseTurboSprocketsRails3Check: { }
